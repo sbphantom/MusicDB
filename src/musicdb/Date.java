@@ -9,23 +9,15 @@ public class Date implements Comparable<Date> {
     private int day;
     
 
-    @Override public int compareTo(Date date){
-        if (this.year == date.year && this.month == date.month && this.day == date.day){
-            return 0; 
+    @Override
+    public int compareTo(Date date) {
+        if (this.year != date.year) {
+            return this.year - date.year;
         }
-        
-        if(this.year >= date.year){
-            return 1; 
+        if (this.month != date.month) {
+            return this.month - date.month;
         }
-        else if(this.year == date.year && this.month > date.month){
-            return 1; 
-        }
-        else if(this.year == date.year && this.month == date.month && this.day > date.day){
-            return 1; 
-        }
-
-        return -1; 
-
+        return this.day - date.day;
     }
 
     public boolean isValid(){ 
