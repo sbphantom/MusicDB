@@ -33,6 +33,13 @@ public class Date implements Comparable<Date> {
         return String.format("%d/%d/%d", this.month, this.day, this.year);
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Date date){
+            return compareTo(date) == 0;
+        }
+        return false;
+    }
     public boolean isValid(int year, int month, int day) {
         if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) {
             return false;
