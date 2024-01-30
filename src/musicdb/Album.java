@@ -40,6 +40,29 @@ public class Album {
 
     } //compute the average ratings
 
+    public String generateRatingString(){
+        StringBuilder ratingString = new StringBuilder("Rating: ");
+        if (ratings == null){
+            ratingString.append("none");
+        }
+        else{
+            int[] ratingArray = new int[5];
+            Rating current = ratings;
+
+            while (current != null){
+                ratingArray[current.getStar()-1]++;
+                current = current.getNext();
+            }
+            for (int i = 0; i < ratingArray.length; i++){
+                if (ratingArray[i] > 0){
+                    ratingString.append("*".repeat(i + 1)).append(String.format("(%d)", ratingArray[i]));
+                }
+            }
+            ratingString.append(String.format("(average rating: %.2f)", avgRatings()));
+        }
+        return ratingString.toString();
+    }
+
     @Override
     public boolean equals(Object obj){
         if(obj instanceof Album album){
@@ -50,7 +73,38 @@ public class Album {
 
     @Override
     public String toString(){
-        return String.format("[%s] Released %s [%s] [%s] %s", this.title, this.released, this.artist, this.genre, this.ratings);
+        return String.format("[%s] Released %s [%s] [%s] %s", this.title, this.released, this.artist, this.genre, this.generateRatingString());
     }
 
+    public static void main(String[] args){
+        Album album1 = new Album("Fearless", new Artist("Taylor Swift", new Date(1989, 12, 13)),Genre.POP, new Date(2008, 11, 8));
+
+        System.out.println(album1);
+
+        album1.rate(1);
+        album1.rate(1);
+        album1.rate(2);
+        album1.rate(2);
+        album1.rate(2);
+        album1.rate(2);
+        album1.rate(3);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(4);
+        album1.rate(5);
+        album1.rate(5);
+        album1.rate(5);
+        album1.rate(5);
+        album1.rate(5);
+
+        System.out.println(album1);
+    }
 }
