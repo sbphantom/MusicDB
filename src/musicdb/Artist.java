@@ -28,6 +28,6 @@ public class Artist implements Comparable<Artist> {
 
     @Override
     public String toString(){
-        return String.format("%s: %s", this.name, this.born);
+        return String.format("%s:%s", this.name, this.born);
     }
 }
