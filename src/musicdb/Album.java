@@ -5,6 +5,27 @@ public class Album {
     private Artist artist;
     private Genre genre;
     private Date released;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public Date getReleased() {
+        return released;
+    }
+
+    public Rating getRatings() {
+        return ratings;
+    }
+
     private Rating ratings; //a linked list of ratings
 
     public Album(String title, Artist artist, Genre genre, Date released) {
