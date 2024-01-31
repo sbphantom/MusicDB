@@ -1,3 +1,10 @@
+/**
+ * An Object representation of a Date
+ * Range of valid date values are from 1/1/1900
+ * to date of compiled time.
+ * @author Danny Onuorah, Adeola Asimolowo
+ */
+
 package musicdb;
 
 import java.util.Calendar;
@@ -8,6 +15,11 @@ public class Date implements Comparable<Date> {
     private int year;
     private int month;
     private int day;
+
+    public final int NUM_OF_MONTHS = 12;
+    public final int MAX_DAYS = 31;
+
+    public final int MIN_YEAR = 1900;
 
     public Date(int year, int month, int day) {
         if (isValid(year, month, day)) {
@@ -40,15 +52,28 @@ public class Date implements Comparable<Date> {
         }
         return false;
     }
+
+    //2. The date of birth of an artist is today or a future date.
+    //3. The date of birth of an artist is before the year of 1900.
+    //5. The release date is today or a future date.
+    //6. The release date is before the year of 1900.
+    /**
+     * An Object representation of a Date
+     * Range of valid date values are from 1/1/1900
+     * to date of compiled time.
+     * @param year the year number
+     * @param month the month number
+     * @param day the day number
+     */
     public boolean isValid(int year, int month, int day) {
-        if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) {
+        if (year < MIN_YEAR || month < 1 || day < 1 || month > NUM_OF_MONTHS || day > MAX_DAYS) {
             return false;
         }
 
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setLenient(false);
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1); // Months are 0-based
+        calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
         try {
