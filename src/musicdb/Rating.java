@@ -1,3 +1,8 @@
+/**
+ * Node for the Rating linked list
+ * @author Danny Onuorah
+ */
+
 package musicdb;
 
 public class Rating {
