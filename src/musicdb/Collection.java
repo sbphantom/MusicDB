@@ -1,15 +1,27 @@
+/**
+ * An array based data structure for storing Albums
+ * Array increases in increments of fours when reaching capacity
+ * @author Danny Onuorah, Adeola Asimolowo
+ */
+
+
 package musicdb;
 
 public class Collection {
     private Album[] albums; //list of albums
     private int size; //number of albums in the list
-    private final int NOT_FOUND = -1;
-    private final int PARTITION_SIZE = 4;
+    public static final int NOT_FOUND = -1;
+    public static final int PARTITION_SIZE = 4;
 
     public Collection() {
         this.albums = new Album[PARTITION_SIZE];
     }
 
+    /**
+     * Searches for the album on the collection
+     * @param album target album to find
+     * @return its index in the array if found, else -1
+     */
     private int find(Album album) {
         for (int i = 0; i < size; i++) {
             if (albums[i].equals(album)) {
@@ -19,6 +31,9 @@ public class Collection {
         return NOT_FOUND;
     } //helper method
 
+    /**
+     * Increases the max capacity of the collection by four
+     */
     private void grow() {
         Album[] newArray = new Album[size + PARTITION_SIZE];
         for (int i = 0; i < size; i++) {
@@ -28,10 +43,20 @@ public class Collection {
 
     } //helper method to increase the capacity by 4
 
+    /**
+     * Searches for the album in the collection
+     * @param album target album to find
+     * @return true if the array is found, else false
+     */
     public boolean contains(Album album) {
         return find(album) != NOT_FOUND;
     }
 
+    /**
+     * Adds an album to the collection
+     * @param album target album to find
+     * @return true if successfully added, else false
+     */
     public boolean add(Album album) {
         if (contains(album)) return false;
         else {
@@ -42,6 +67,11 @@ public class Collection {
         }
     } //false if the album exists
 
+    /**
+     * Removes an album from the collection
+     * @param album target album to remove
+     * @return true if successfully removed, else false
+     */
     public boolean remove(Album album) {
         if (size == 0 || !contains(album)) return false;
         else {
@@ -53,65 +83,83 @@ public class Collection {
         }
     } //false if the album doesn’t exist
 
+    /**
+     * Adds a new rating to an album in the collection.
+     * @param album the album rate
+     * @param rating the rating given
+     */
     public void rate(Album album, int rating) {
         int index = find(album);
         if (index >= 0) albums[index].rate(rating);
     }
 
-    public void sort(Album[] arr, java.util.Comparator<Album> comparator) {
-        int n = arr.length;
-        for (int i = 1; i < n; ++i) {
-            Album key = arr[i];
+    /**
+     * Compares two albums based on a given param
+     * @param a1 first album to compare to
+     * @param a2 second album to compare against
+     * @param compareBy what to compare by
+     *                  options are "release", "genre", and "rating"
+     *                  defaults to album title
+     */
+    private int compareAlbums(Album a1, Album a2, String compareBy) {
+        return switch (compareBy) {
+            case "release" -> a1.getReleased().compareTo(a2.getReleased());
+            case "genre" -> a1.getGenre().compareTo(a2.getGenre());
+            case "rating" -> (int) (a1.avgRatings() - a2.avgRatings());
+            default -> a1.getTitle().compareTo(a2.getTitle());
+        };
+    }
+
+    /**
+     * Sorts the collection based on a given parameter
+     * @param sortBy sorts collection by given string
+     *               options are "release", "genre", and "rating"
+     *               defaults to album title
+     */
+    private void sort(String sortBy) {
+        for (int i = 1; i < size; ++i) {
+            Album key = albums[i];
             int j = i - 1;
 
-            while (j >= 0 && comparator.compare(arr[j], key) > 0) {
-                arr[j + 1] = arr[j];
+            while (j >= 0 && compareAlbums(albums[j], key, sortBy) > 0){
+                albums[j + 1] = albums[j];
                 j = j - 1;
             }
-            arr[j + 1] = key;
+            albums[j + 1] = key;
         }
     }
 
+    /**
+     * Prints the collection by date
+     */
     public void printByDate() {
-        Album[] copyArray = new Album[size];
+        sort("release");
         for (int i = 0; i < size; i++) {
-            copyArray[i] = albums[i];
-        }
-        java.util.Comparator<Album> sortByReleased = java.util.Comparator.comparing(Album::getReleased);
-        sort(copyArray, sortByReleased);
-
-        for (Album a : copyArray) {
-            System.out.println(a);
+            System.out.println(albums[i]);
         }
     }
 
+    /**
+     * Prints the collection by genre
+     */
     public void printByGenre() {
-        Album[] copyArray = new Album[size];
+        sort("genre");
         for (int i = 0; i < size; i++) {
-            copyArray[i] = albums[i];
-        }
-        java.util.Comparator<Album> sortByGenre = java.util.Comparator.comparing(Album::getGenre);
-        sort(copyArray, sortByGenre);
-
-        for (Album a : copyArray) {
-            System.out.println(a);
+            System.out.println(albums[i]);
         }
     } //sort by genre, then artist
 
+    /**
+     * Prints the collection by rating
+     */
     public void printByRating() {
-        Album[] copyArray = new Album[size];
+        sort("rating");
         for (int i = 0; i < size; i++) {
-            copyArray[i] = albums[i];
-        }
-        java.util.Comparator<Album> sortByRating = java.util.Comparator.comparing(Album::avgRatings);
-        sort(copyArray, sortByRating);
-
-        for (Album a : copyArray) {
-            System.out.println(a);
+            System.out.println(albums[i]);
         }
     }//sort by average rating, then title
 
-    public static void main(String[] args) {
+    public static void test() {
         Collection collection1 = new Collection();
 
         Album album1 = new Album("Fearless", new Artist("Taylor Swift", new Date(1989, 12, 13)), Genre.POP, new Date(2008, 11, 8));
@@ -157,5 +205,7 @@ public class Collection {
 
         collection1.printByRating();
 
+        System.out.println(collection1.albums.length);
+        System.out.println(collection1.size);
     }
 }
