@@ -17,6 +17,16 @@ public class Date implements Comparable<Date> {
         }
     }
 
+    public static Date todayDate(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Note: Calendar months are 0-based
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        
+        Date todaysDate = new Date(year, month, day); 
+        return todaysDate; 
+    }
+
     @Override
     public int compareTo(Date date) {
         if (this.year != date.year) {
@@ -33,8 +43,28 @@ public class Date implements Comparable<Date> {
         return String.format("%d/%d/%d", this.month, this.day, this.year);
     }
 
-    public boolean isValid(int year, int month, int day) {
-        if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) {
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Date date){
+            return compareTo(date) == 0;
+        }
+        return false;
+    }
+
+    //2. The date of birth of an artist is today or a future date.
+    //3. The date of birth of an artist is before the year of 1900.
+    //5. The release date is today or a future date.
+    //6. The release date is before the year of 1900.
+    /**
+     * An Object representation of a Date
+     * Range of valid date values are from 1/1/1900
+     * to date of compiled time.
+     * @param year the year number
+     * @param month the month number
+     * @param day the day number
+     */
+    public  boolean isValid(int year, int month, int day) {
+        if (year < MIN_YEAR || month < 1 || day < 1 || month > NUM_OF_MONTHS || day > MAX_DAYS) {
             return false;
         }
 
@@ -43,6 +73,7 @@ public class Date implements Comparable<Date> {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month - 1); // Months are 0-based
         calendar.set(Calendar.DAY_OF_MONTH, day);
+        
 
         try {
             calendar.get(Calendar.YEAR); // This will trigger any potential exceptions
