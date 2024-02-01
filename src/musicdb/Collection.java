@@ -159,15 +159,35 @@ public class Collection {
         }
     }//sort by average rating, then title
 
-
+    /**
+     * Checks if the collection is empty 
+     * @return True -> collection has no albumns
+     * @return False -> collection containts at least 1 album.
+     */
     public boolean isEmpty(){ 
         if(this.size == 0){
             return true; 
         }
-
         return false; 
     }
 
+    /**
+     * Locates album in array based on the params
+     * @param Title The album title
+     * @param artistName The name of the artist
+     * @param date 
+     * @return
+     */    
+    public Album findAlbum(String Title, String artistName, Date date ){
+        for(int i = 0; i < size; i++){
+            if(albums[i].getArtist().getArtistName().equals(artistName) &&
+               albums[i].getTitle().equals(Title) &&
+               albums[i].getReleased().equals(date)
+            ){
+                return albums[i]; 
+            }
+        }
+    }
 
 
     public static void test() {

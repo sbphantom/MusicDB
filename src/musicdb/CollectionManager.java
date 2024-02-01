@@ -49,14 +49,15 @@ public class CollectionManager {
             String date = inputString[3]; 
 
             // However, the album being removed might not exist in the collection.
-            if(mainCollection.isEmpty() ){
+            if(mainCollection.isEmpty()){
                 return String.format("%s(%s:%S) is not in the collection", title, artist, date); 
             }
 
-
-
     }
 
+    private void deleteAlbum(String title, String artist, String date, Collection mainCollection){
+        mainCollection.
+    }
 
 
 
