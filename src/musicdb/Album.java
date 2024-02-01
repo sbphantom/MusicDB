@@ -1,3 +1,10 @@
+/**
+ * An Object representation of an Album which consists of a title, Artist, Genre, release Date, and ratings.
+ * Ratings are stored as a linked list and rating is the head.
+ *
+ * @author Danny Onuorah
+ */
+
 package musicdb;
 
 public class Album {
@@ -5,7 +12,10 @@ public class Album {
     private Artist artist;
     private Genre genre;
     private Date released;
+
     private Rating ratings; //a linked list of ratings
+
+    public static final int MAX_STARS = 5;
 
     public Album(String title, Artist artist, Genre genre, Date released) {
         this.title = title;
@@ -13,6 +23,31 @@ public class Album {
         this.genre = genre;
         this.released = released;
     }
+
+    public String getTitle() { return title; }
+
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public Date getReleased() {
+        return released;
+    }
+
+    public Rating getRatings() {
+        return ratings;
+    }
+
+
+    /**
+     * Adds a new rating to the album*
+     *
+     * @param star int of rating
+     */
 
     public void rate(int star) {
         if (ratings == null) {
@@ -25,8 +60,11 @@ public class Album {
             current = current.getNext();
         }
         current.setNext(new Rating(star));
-    } //add a rating to the linked list
+    }
 
+    /**
+     * Returns the average of ratings as a double
+     */
     public double avgRatings() {
         Rating current = ratings;
         double sum = 0;
@@ -40,21 +78,24 @@ public class Album {
 
     } //compute the average ratings
 
-    public String generateRatingString(){
+    /**
+     * Generates a string representation of all the ratings
+     * Number in parentheses is the number of ratings received for the number of stars to the left
+     */
+    private String generateRatingString() {
         StringBuilder ratingString = new StringBuilder("Rating: ");
-        if (ratings == null){
+        if (ratings == null) {
             ratingString.append("none");
-        }
-        else{
-            int[] ratingArray = new int[5];
+        } else {
+            int[] ratingArray = new int[MAX_STARS];
             Rating current = ratings;
 
-            while (current != null){
-                ratingArray[current.getStar()-1]++;
+            while (current != null) {
+                ratingArray[current.getStar() - 1]++;
                 current = current.getNext();
             }
-            for (int i = 0; i < ratingArray.length; i++){
-                if (ratingArray[i] > 0){
+            for (int i = 0; i < ratingArray.length; i++) {
+                if (ratingArray[i] > 0) {
                     ratingString.append("*".repeat(i + 1)).append(String.format("(%d)", ratingArray[i]));
                 }
             }
@@ -64,46 +105,34 @@ public class Album {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Album album){
+    public boolean equals(Object obj) {
+        if (obj instanceof Album album) {
             return this.title.equalsIgnoreCase(album.title) && this.artist.equals(album.artist);
         }
         return false;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("[%s] Released %s [%s] [%s] %s", this.title, this.released, this.artist, this.genre, this.generateRatingString());
     }
 
-    public static void main(String[] args){
-        Album album1 = new Album("Fearless", new Artist("Taylor Swift", new Date(1989, 12, 13)),Genre.POP, new Date(2008, 11, 8));
+    public static void main(String[] args) {
+        Album album1 = new Album("Fearless", new Artist("Taylor Swift", new Date(1989, 12, 13)), Genre.POP, new Date(2008, 11, 8));
 
         System.out.println(album1);
 
         album1.rate(1);
-        album1.rate(1);
         album1.rate(2);
-        album1.rate(2);
-        album1.rate(2);
-        album1.rate(2);
+        album1.rate(3);
+        album1.rate(3);
         album1.rate(3);
         album1.rate(4);
         album1.rate(4);
         album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
-        album1.rate(4);
         album1.rate(5);
         album1.rate(5);
-        album1.rate(5);
-        album1.rate(5);
-        album1.rate(5);
+
 
         System.out.println(album1);
     }

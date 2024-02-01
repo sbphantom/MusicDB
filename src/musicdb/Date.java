@@ -1,3 +1,10 @@
+/**
+ * An Object representation of a Date
+ * Range of valid date values are from 1/1/1900
+ * to date of compiled time.
+ * @author Danny Onuorah, Adeola Asimolowo
+ */
+
 package musicdb;
 
 import java.util.Calendar;
@@ -8,6 +15,11 @@ public class Date implements Comparable<Date> {
     private int year;
     private int month;
     private int day;
+
+    public final int NUM_OF_MONTHS = 12;
+    public final int MAX_DAYS = 31;
+
+    public final int MIN_YEAR = 1900;
 
     public Date(int year, int month, int day) {
         if (isValid(year, month, day)) {
@@ -63,7 +75,7 @@ public class Date implements Comparable<Date> {
      * @param month the month number
      * @param day the day number
      */
-    public  boolean isValid(int year, int month, int day) {
+    public boolean isValid(int year, int month, int day) {
         if (year < MIN_YEAR || month < 1 || day < 1 || month > NUM_OF_MONTHS || day > MAX_DAYS) {
             return false;
         }
@@ -71,7 +83,7 @@ public class Date implements Comparable<Date> {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setLenient(false);
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1); // Months are 0-based
+        calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         
 
