@@ -92,8 +92,7 @@ public class CollectionManager {
         Date artistBirth = album.getArtist().getArtistBorn(); 
         if(artistBirth.toString().equals("0/0/0") || 
         artistBirth.equals(CURRENTDate) ||  
-        CURRENTDate.compareTo(artistBirth) > 0  || 
-        artistBirth.compareTo(MINArtistDate) <= 0 ){
+        artistBirth.compareTo(CURRENTDate) > 0){
             return "Artist DOB:" + album.getArtist().getArtistBorn().toString() + "is invalid"; 
         }
                      
@@ -102,11 +101,10 @@ public class CollectionManager {
         //Case: The release date is before the year of 1900.
         Date releaseDate = album.getReleased(); 
         if(releaseDate.toString().equals("0/0/0") || 
-           releaseDate.equals(CURRENTDate) || 
-           CURRENTDate.compareTo(releaseDate) > 0 || 
-           releaseDate.compareTo(MINArtistDate) <= 0 ){
-           
-            return "Date Released: "  + album.getReleased().toString() + "is invalid"; 
+           releaseDate.equals(CURRENTDate) ||
+           releaseDate.compareTo(CURRENTDate) > 0
+          ){
+            return "Date Released: "  + album.getReleased().toString() + " is invalid";
         }
 
         //An album with the same title and artist is already in the collection.
@@ -119,7 +117,7 @@ public class CollectionManager {
     
     private String commandA(String line, Collection mainCollection){
         String[] input = line.split(",");
-        Album album = albumBuilder(input); 
+        Album album = albumBuilder(input);
         String results = albumErrorChecker(album, mainCollection); 
         if(!results.isEmpty()){
             return results; 

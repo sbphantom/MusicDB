@@ -1,6 +1,7 @@
 /**
  * An Object representation of an Artist
  * Artist must be born after 1900 to be considered valid
+ *
  * @author Danny Onuorah, Adeola Asimolowo
  */
 
@@ -13,6 +14,10 @@ public class Artist implements Comparable<Artist> {
     public Artist(String name, Date born) {
         this.name = name;
         this.born = born;
+    }
+
+    public Date getArtistBorn() {
+        return this.born;
     }
 
     @Override
@@ -55,9 +60,6 @@ public class Artist implements Comparable<Artist> {
 
 
     }
-    }
-
-    public Date getArtistBorn(){
-        return this.born; 
-    } 
 }
+
+

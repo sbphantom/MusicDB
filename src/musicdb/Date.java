@@ -86,10 +86,12 @@ public class Date implements Comparable<Date> {
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         
-
-        try {
-            calendar.get(Calendar.YEAR); // This will trigger any potential exceptions
-            calendar.get(Calendar.MONTH);
+       calendar.set(Calendar.YEAR, year);
+        int retrievedYear = calendar.get(Calendar.YEAR);
+        int retrievedMonth = calendar.get(Calendar.MONTH);
+       try {
+           // calendar.get(Calendar.YEAR); // This will trigger any potential exceptions
+          // calendar.get(Calendar.MONTH);
             calendar.get(Calendar.DAY_OF_MONTH);
             return true; // If no exception occurred, date is valid
         } catch (Exception e) {
@@ -115,7 +117,7 @@ public class Date implements Comparable<Date> {
         System.out.println(new Date(2024, 13, 1).toString().equals( "0/0/0")); // invalid month
         System.out.println(new Date(2024, 1, 0).toString().equals( "0/0/0")); // invalid day
         System.out.println(new Date(2024, 1, 32).toString().equals( "0/0/0")); // invalid day
-
+        System.out.println(new Date(2009, 4, 31).toString().equals( "0/0/0")); // invalid day
         // Comparisons
         Date date1 = new Date(2024, 2, 12);
         Date date2 = new Date(2024, 2, 13);
