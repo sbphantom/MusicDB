@@ -159,6 +159,17 @@ public class Collection {
         }
     }//sort by average rating, then title
 
+
+    public boolean isEmpty(){ 
+        if(this.size == 0){
+            return true; 
+        }
+
+        return false; 
+    }
+
+
+
     public static void test() {
         Collection collection1 = new Collection();
 
