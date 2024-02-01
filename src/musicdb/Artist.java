@@ -9,7 +9,6 @@ public class Artist implements Comparable<Artist> {
         this.born = born;
     }
 
-
     @Override
     public int compareTo(Artist artist){
         if(this.name.compareTo(artist.name) != 0){
@@ -30,4 +29,8 @@ public class Artist implements Comparable<Artist> {
     public String toString(){
         return String.format("%s:%s", this.name, this.born);
     }
+
+    public Date getArtistBorn(){
+        return this.born; 
+    } 
 }
