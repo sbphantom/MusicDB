@@ -25,15 +25,42 @@ public class CollectionManager {
     private String commandHandler(String command, String inputString, Collection mainCollection){
         switch (command) {
             case "A":
-                return commandA(inputString, mainCollection);
+              
+                return commandA( inputString.split(','), mainCollection);
+            case "D": 
 
-            case "":
-                return "Invalid Command"; 
+            case "R": 
+
+            case "PD": 
+
+            case "PG": 
+
+            case "PR": 
             default:
-                return "";
+                return "Invalid Command";
 
         }
     } 
+
+
+    private String commandD(String[] inputString, Collection mainCollection){
+            String title = inputString[1]; 
+            String artist = inputString[2]; 
+            String date = inputString[3]; 
+
+            // However, the album being removed might not exist in the collection.
+            if(mainCollection.isEmpty()){
+                return String.format("%s(%s:%S) is not in the collection", title, artist, date); 
+            }
+
+    }
+
+    private void deleteAlbum(String title, String artist, String date, Collection mainCollection){
+        
+       Date dateEntered =  dateBuilder(date.split("/")); 
+        mainCollection.findAlbum(title, artist, dateEntered); 
+    }
+
 
 
 
@@ -115,9 +142,8 @@ public class CollectionManager {
         return ""; 
     }   
     
-    private String commandA(String line, Collection mainCollection){
-        String[] input = line.split(",");
-        Album album = albumBuilder(input);
+    private String commandA(String[] input, Collection mainCollection){
+        Album album = albumBuilder(input); 
         String results = albumErrorChecker(album, mainCollection); 
         if(!results.isEmpty()){
             return results; 
