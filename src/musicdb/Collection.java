@@ -172,23 +172,41 @@ public class Collection {
     }
 
     /**
-     * Locates album in array based on the params
+     * Locates album in array based on the two options
+     * TARD - Locates album given a album title, Artist name, and release date
+     * TABD - Locates album given a album title, Artist name, and Artist Born-date.
      * @param Title The album title
      * @param artistName The name of the artist
-     * @param date 
-     * @return
+     * @param date Date of the album
+     * @returns the target album
      */    
-    public Album findAlbum(String Title, String artistName, Date date ){
-        Album found = new Album(null, null, null, null); 
-        for(int i = 0; i < size; i++){
-            if(albums[i].getArtist().getArtistName().equals(artistName) &&
-               albums[i].getTitle().equals(Title) &&
-               albums[i].getReleased().equals(date)
-            ){
-                found = albums[i]; 
-            }
+    public Album searchAlbum(String searchOption, String Title, String artistName, Date date ){
+
+        switch (searchOption.toUpperCase()){
+
+            case "TARD":
+                Album targetAlbum = new Album(null, null, null, null);
+                for(int i = 0; i < size; i++){
+                    if(albums[i].getArtist().getArtistName().equalsIgnoreCase(artistName) &&
+                            albums[i].getTitle().equalsIgnoreCase(Title) &&
+                            albums[i].getReleased().equals(date)
+                    ){
+                        targetAlbum = albums[i];
+                    }
+                }
+                return targetAlbum;
+            case "TABD":
+                Album targetAlbum = new Album(null, null, null, null);
+                Artist targetArtist = new Artist(artistName, date);
+                for(int i = 0; i < size; i++){
+                    if(albums[i].getArtist().equals(targetArtist) &&
+                       albums[i].getTitle().equalsIgnoreCase(Title)){
+                        return targetAlbum;
+                    }
+                }
         }
-        return found; 
+
+        return null;
     }
 
 

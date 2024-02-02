@@ -16,9 +16,7 @@ public class Artist implements Comparable<Artist> {
         this.born = born;
     }
 
-    public Date getArtistBorn() {
-        return this.born;
-    }
+
 
     @Override
     public int compareTo(Artist artist) {
