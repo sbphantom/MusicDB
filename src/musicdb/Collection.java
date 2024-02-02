@@ -179,14 +179,16 @@ public class Collection {
      * @return
      */    
     public Album findAlbum(String Title, String artistName, Date date ){
+        Album found = new Album(null, null, null, null); 
         for(int i = 0; i < size; i++){
             if(albums[i].getArtist().getArtistName().equals(artistName) &&
                albums[i].getTitle().equals(Title) &&
                albums[i].getReleased().equals(date)
             ){
-                return albums[i]; 
+                found = albums[i]; 
             }
         }
+        return found; 
     }
 
 

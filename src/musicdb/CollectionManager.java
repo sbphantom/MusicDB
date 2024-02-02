@@ -56,7 +56,9 @@ public class CollectionManager {
     }
 
     private void deleteAlbum(String title, String artist, String date, Collection mainCollection){
-        mainCollection.
+        
+       Date dateEntered =  dateBuilder(date.split("/")); 
+        mainCollection.findAlbum(title, artist, dateEntered); 
     }
 
 
