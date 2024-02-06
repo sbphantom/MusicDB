@@ -37,10 +37,14 @@ public class CollectionManager {
             case "R":
                 return commandR(inputString.split(","), mainCollection);
             case "PD":
-
+                if(mainCollection.isEmpty()){ return "Collection is empty!"; }
+                mainCollection.printByDate();
             case "PG":
-
+                if(mainCollection.isEmpty()){ return "Collection is empty!"; }
+                mainCollection.printByGenre();
             case "PR":
+                if(mainCollection.isEmpty()){ return "Collection is empty!"; }
+                mainCollection.printByRating();
             default:
                 return "Invalid Command";
 
@@ -95,12 +99,15 @@ public class CollectionManager {
         String artist = inputString[2];
         String date = inputString[3];
 
+        Date dateEntered = dateBuilder(date.split("/"));
+        Album targetAlbum = mainCollection.searchAlbum("TARD", title, artist, dateEntered)
+
         // However, the album being removed might not exist in the collection.
-        if (mainCollection.isEmpty()) {
+        if (mainCollection.isEmpty() || targetAlbum == null) {
             return String.format("%s(%s:%S) is not in the collection", title, artist, date);
         }
 
-        deleteAlbum(title, artist, date, mainCollection);
+        mainCollection.remove(targetAlbum);
         return String.format("%s(%s:%s) removed from the collection", title, artist, date);
     }
 
@@ -161,7 +168,7 @@ public class CollectionManager {
      * @param mainCollection collection that stores all albums
      * @return s corresponding error message, if an error is found.
      */
-    private String albumErrorChecker(Album album, Collection mainCollection) {
+    private String albumErrorChecker(Album album, Collection mainCollection, String[] param) {
 
         //Case: The date of birth of an artist is not a valid calendar date.
         //Case: The date of birth of an artist is today or a future date.
@@ -170,7 +177,7 @@ public class CollectionManager {
         if (artistBirth.toString().equals("0/0/0") ||
                 artistBirth.equals(CURRENTDate) ||
                 artistBirth.compareTo(CURRENTDate) > 0) {
-            return "Artist DOB:" + album.getArtist().getArtistBorn().toString() + "is invalid";
+            return "Artist DOB:" + param[3] + "is invalid";
         }
 
         //Case: The release date is not a valid calendar date.
@@ -181,7 +188,7 @@ public class CollectionManager {
                 releaseDate.equals(CURRENTDate) ||
                 releaseDate.compareTo(CURRENTDate) > 0
         ) {
-            return "Date Released: " + album.getReleased().toString() + " is invalid";
+            return "Date Released: " + param[5]+ " is invalid";
         }
 
         //An album with the same title and artist is already in the collection.
@@ -202,11 +209,16 @@ public class CollectionManager {
      */
     private String commandA(String[] input, Collection mainCollection) {
         Album album = albumBuilder(input);
-        String results = albumErrorChecker(album, mainCollection);
+        String results = albumErrorChecker(album, mainCollection, input);
         if (!results.isEmpty()) {
             return results;
         }
+        else if(mainCollection.contains(album)){
+            return String.format("%s(%s:%s) is already added to the collection.", album.getTitle(), album.getArtist(), input[3]);
 
+        }
+
+        mainCollection.add(album); 
         return String.format("%s(%s:%s) added to the collection.", album.getTitle(), album.getArtist(), album.getArtist().getArtistBorn());
     }
 
