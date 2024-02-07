@@ -134,9 +134,11 @@ public class Collection {
      */
     public void printByDate() {
         sort("release");
+        System.out.println("* Collection sorted by Released Date/Title *\n");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
+        System.out.println("* end of list *");
     }
 
     /**
@@ -144,9 +146,11 @@ public class Collection {
      */
     public void printByGenre() {
         sort("genre");
+        System.out.println("* Collection sorted by Genre/Artist *\n");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
+        System.out.println("* end of list *");
     } //sort by genre, then artist
 
     /**
@@ -154,9 +158,11 @@ public class Collection {
      */
     public void printByRating() {
         sort("rating");
+        System.out.println("* Collection sorted by Rating/Title * \n");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
+        System.out.println("* end of list *");
     }//sort by average rating, then title
 
     /**
@@ -196,12 +202,13 @@ public class Collection {
                 }
                 return targetAlbum;
             case "TABD":
-                Album targetAlbum = new Album(null, null, null, null);
+                Album targetAlbum2 = new Album(null, null, null, null);
                 Artist targetArtist = new Artist(artistName, date);
                 for(int i = 0; i < size; i++){
                     if(albums[i].getArtist().equals(targetArtist) &&
                        albums[i].getTitle().equalsIgnoreCase(Title)){
-                        return targetAlbum;
+                        targetAlbum2 = albums[i];
+                        return targetAlbum2;
                     }
                 }
         }

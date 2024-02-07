@@ -61,11 +61,16 @@ public class CollectionManager {
         String artistName = inputString[2];
         Date date = dateBuilder(inputString[3].split("/"));
         int rating = Integer.parseInt(inputString[4]);
+        Album album = maincollection.searchAlbum("TABD", title, artistName, date);
+
+
         if (rating < 1 || rating > 5) {
             return "Invalid rating, rating scale is 1 to 5";
         }
+        else if(album == null){
+              return String.format("%s(%s:%S) is not in the collection", title, artistName, date);
+        }
 
-        Album album = maincollection.searchAlbum("TABD", title, artistName, date);
         return rateAlbum(album, rating);
     }
 
@@ -100,7 +105,7 @@ public class CollectionManager {
         String date = inputString[3];
 
         Date dateEntered = dateBuilder(date.split("/"));
-        Album targetAlbum = mainCollection.searchAlbum("TARD", title, artist, dateEntered)
+        Album targetAlbum = mainCollection.searchAlbum("TARD", title, artist, dateEntered);
 
         // However, the album being removed might not exist in the collection.
         if (mainCollection.isEmpty() || targetAlbum == null) {
@@ -177,7 +182,7 @@ public class CollectionManager {
         if (artistBirth.toString().equals("0/0/0") ||
                 artistBirth.equals(CURRENTDate) ||
                 artistBirth.compareTo(CURRENTDate) > 0) {
-            return "Artist DOB:" + param[3] + "is invalid";
+            return "Artist DOB:" + param[3] + " is invalid";
         }
 
         //Case: The release date is not a valid calendar date.
@@ -230,7 +235,11 @@ public class CollectionManager {
         while (input.hasNext()) {
 
             String line = input.nextLine();
+            if(line.trim().isEmpty()){
+                continue;
+            }
             System.out.println(commandHandler(commandSelect(line), line, mainCollection));
+
 
             if (line.equals("Q")) {
                 System.out.println("Collection Manager terminated");
