@@ -43,16 +43,20 @@ public class CollectionManager {
             case "PD":
                 if(mainCollection.isEmpty()){ return "Collection is empty!"; }
                 mainCollection.printByDate();
+                break;
             case "PG":
                 if(mainCollection.isEmpty()){ return "Collection is empty!"; }
                 mainCollection.printByGenre();
+                break;
             case "PR":
                 if(mainCollection.isEmpty()){ return "Collection is empty!"; }
                 mainCollection.printByRating();
+                break;
             default:
                 return "Invalid Command";
 
         }
+        return "";
     }
 
     private String rateAlbum(Album album, int rating) {
@@ -250,8 +254,7 @@ public class CollectionManager {
             if(line.trim().isEmpty()){
                 continue;
             }
-            System.out.println(commandHandler(commandSelect(line), line, mainCollection));
-
+            System.out.println( "\n" + commandHandler(commandSelect(line), line, mainCollection));
 
             if (line.equals("Q")) {
                 System.out.println("Collection Manager terminated");

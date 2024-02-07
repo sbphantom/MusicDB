@@ -138,7 +138,8 @@ public class Collection {
      */
     public void printByDate() {
         sort("release");
-        System.out.println("* Collection sorted by Released Date/Title *\n");
+        System.out.println("* Collection sorted by Released Date/Title *");
+
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
@@ -150,7 +151,7 @@ public class Collection {
      */
     public void printByGenre() {
         sort("genre");
-        System.out.println("* Collection sorted by Genre/Artist *\n");
+        System.out.println("* Collection sorted by Genre/Artist *");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
@@ -162,7 +163,7 @@ public class Collection {
      */
     public void printByRating() {
         sort("rating");
-        System.out.println("* Collection sorted by Rating/Title * \n");
+        System.out.println("* Collection sorted by Rating/Title * ");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
@@ -171,8 +172,8 @@ public class Collection {
 
     /**
      * Checks if the collection is empty 
-     * @return True -> collection has no albumns
-     * @return False -> collection containts at least 1 album.
+     * @return True -> collection has no albums
+     * @return False -> collection contains at least 1 album.
      */
     public boolean isEmpty(){ 
         if(this.size == 0){
