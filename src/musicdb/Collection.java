@@ -74,11 +74,15 @@ public class Collection {
      */
     public boolean remove(Album album) {
         if (size == 0 || !contains(album)) return false;
-        else {
-            for (int i = find(album); i < size; i++) {
+        else if (find(album) == size - 1 ) {
+            albums[find(album)] = null;
+            return  true;
+        } else {
+            for (int i = find(album); i < size - 1; i++) {
                 albums[i] = albums[i + 1];
             }
             size--;
+            albums[size] = null;
             return true;
         }
     } //false if the album doesn’t exist
@@ -187,11 +191,10 @@ public class Collection {
      * @returns the target album
      */    
     public Album searchAlbum(String searchOption, String Title, String artistName, Date date ){
-
+        Album targetAlbum = new Album(null, null, null, null);
         switch (searchOption.toUpperCase()){
 
             case "TARD":
-                Album targetAlbum = new Album(null, null, null, null);
                 for(int i = 0; i < size; i++){
                     if(albums[i].getArtist().getArtistName().equalsIgnoreCase(artistName) &&
                             albums[i].getTitle().equalsIgnoreCase(Title) &&
@@ -202,13 +205,13 @@ public class Collection {
                 }
                 return targetAlbum;
             case "TABD":
-                Album targetAlbum2 = new Album(null, null, null, null);
+
                 Artist targetArtist = new Artist(artistName, date);
                 for(int i = 0; i < size; i++){
                     if(albums[i].getArtist().equals(targetArtist) &&
                        albums[i].getTitle().equalsIgnoreCase(Title)){
-                        targetAlbum2 = albums[i];
-                        return targetAlbum2;
+                        targetAlbum = albums[i];
+                        return targetAlbum;
                     }
                 }
         }

@@ -6,7 +6,11 @@ public class CollectionManager {
     private final Date CURRENTDate = Date.todayDate();
     private final Date MINArtistDate = new Date(1899, 11, 31);
 
-
+    /**
+     * reads the first command from a line in the terminal
+     * @param line
+     * @return the command at the beginning of the string.
+     */
     private String commandSelect(String line) {
         //Declare what method is being used from the user. 
         String[] input = line.split(",");
@@ -56,6 +60,12 @@ public class CollectionManager {
         return String.format("You rate %d for %s:%s(%s)", rating, album.getTitle(), album.getReleased().toString(), album.getArtist().getArtistName());
     }
 
+    /**
+     * returns the result of the R command, which rates an album
+     * @param inputString input string from terminal
+     * @param maincollection collection storing all the albums
+     * @return string
+     */
     private String commandR(String[] inputString, Collection maincollection) {
         String title = inputString[1];
         String artistName = inputString[2];
@@ -105,7 +115,7 @@ public class CollectionManager {
         String date = inputString[3];
 
         Date dateEntered = dateBuilder(date.split("/"));
-        Album targetAlbum = mainCollection.searchAlbum("TARD", title, artist, dateEntered);
+        Album targetAlbum = mainCollection.searchAlbum("TABD", title, artist, dateEntered);
 
         // However, the album being removed might not exist in the collection.
         if (mainCollection.isEmpty() || targetAlbum == null) {
@@ -227,7 +237,9 @@ public class CollectionManager {
         return String.format("%s(%s:%s) added to the collection.", album.getTitle(), album.getArtist(), album.getArtist().getArtistBorn());
     }
 
-
+    /**
+     * Runs the process for
+     */
     public void run() {
         System.out.println("Collection Manager is up and running\n");
         Scanner input = new Scanner(System.in);
