@@ -33,30 +33,30 @@ public class CollectionManager {
      * @return corresponding String from command function called.
      */
     private String commandHandler(String command, String inputString, Collection mainCollection) {
-        switch (command) {
-            case "A":
-                return commandA(inputString.split(","), mainCollection);
-            case "D":
-                return commandD(inputString.split(","), mainCollection);
-            case "R":
-                return commandR(inputString.split(","), mainCollection);
-            case "PD":
-                if(mainCollection.isEmpty()){ return "Collection is empty!"; }
-                mainCollection.printByDate();
-                break;
-            case "PG":
-                if(mainCollection.isEmpty()){ return "Collection is empty!"; }
-                mainCollection.printByGenre();
-                break;
-            case "PR":
-                if(mainCollection.isEmpty()){ return "Collection is empty!"; }
-                mainCollection.printByRating();
-                break;
-            default:
-                return "Invalid Command";
-
-        }
-        return "";
+        return switch (command) {
+            case "A" -> commandA(inputString.split(","), mainCollection);
+            case "D" -> commandD(inputString.split(","), mainCollection);
+            case "R" -> commandR(inputString.split(","), mainCollection);
+            case "PD" -> {
+                if (mainCollection.isEmpty()) {
+                    yield "Collection is empty!";
+                }
+                yield mainCollection.printByDate();
+            }
+            case "PG" -> {
+                if (mainCollection.isEmpty()) {
+                    yield "Collection is empty!";
+                }
+                yield mainCollection.printByGenre();
+            }
+            case "PR" -> {
+                if (mainCollection.isEmpty()) {
+                    yield "Collection is empty!";
+                }
+                yield mainCollection.printByRating();
+            }
+            default -> "Invalid command!";
+        };
     }
 
     private String rateAlbum(Album album, int rating) {
@@ -79,7 +79,7 @@ public class CollectionManager {
 
 
         if (rating < 1 || rating > 5) {
-            return "Invalid rating, rating scale is 1 to 5";
+            return "Invalid rating, rating scale is 1 to 5.";
         }
         else if(album == null){
               return String.format("%s(%s:%S) is not in the collection", title, artistName, date);
@@ -127,7 +127,7 @@ public class CollectionManager {
         }
 
         mainCollection.remove(targetAlbum);
-        return String.format("%s(%s:%s) removed from the collection", title, artist, date);
+        return String.format("%s(%s:%s) removed from the collection.", title, artist, date);
     }
 
     /**
@@ -196,7 +196,7 @@ public class CollectionManager {
         if (artistBirth.toString().equals("0/0/0") ||
                 artistBirth.equals(CURRENTDate) ||
                 artistBirth.compareTo(CURRENTDate) > 0) {
-            return "Artist DOB:" + param[3] + " is invalid";
+            return "Artist DOB: " + param[3] + " is invalid.";
         }
 
         //Case: The release date is not a valid calendar date.
@@ -207,12 +207,12 @@ public class CollectionManager {
                 releaseDate.equals(CURRENTDate) ||
                 releaseDate.compareTo(CURRENTDate) > 0
         ) {
-            return "Date Released: " + param[5]+ " is invalid";
+            return "Date Released: " + param[5]+ " is invalid.";
         }
 
         //An album with the same title and artist is already in the collection.
         if (mainCollection.contains(album)) {
-            return String.format("%s(%s:%s) is already added in the collection", album.getTitle(), album.getArtist(), album.getArtist().getArtistBorn());
+            return String.format("%s(%s) is already in the collection.", album.getTitle(), album.getArtist());
         }
 
         return "";
@@ -233,19 +233,19 @@ public class CollectionManager {
             return results;
         }
         else if(mainCollection.contains(album)){
-            return String.format("%s(%s:%s) is already added to the collection.", album.getTitle(), album.getArtist(), input[3]);
+            return String.format("%s(%s) is already added to the collection.", album.getTitle(), album.getArtist());
 
         }
 
         mainCollection.add(album); 
-        return String.format("%s(%s:%s) added to the collection.", album.getTitle(), album.getArtist(), album.getArtist().getArtistBorn());
+        return String.format("%s(%s) added to the collection.", album.getTitle(), album.getArtist());
     }
 
     /**
      * Runs the process for
      */
     public void run() {
-        System.out.println("Collection Manager is up and running\n");
+        System.out.println("Collection Manager is up running.\n");
         Scanner input = new Scanner(System.in);
         Collection mainCollection = new Collection();
         while (input.hasNext()) {
@@ -254,10 +254,10 @@ public class CollectionManager {
             if(line.trim().isEmpty()){
                 continue;
             }
-            System.out.println( "\n" + commandHandler(commandSelect(line), line, mainCollection));
+            System.out.println(commandHandler(commandSelect(line), line, mainCollection));
 
             if (line.equals("Q")) {
-                System.out.println("Collection Manager terminated");
+                System.out.println("Collection Manager terminated.");
                 input.close();
                 break;
             }
