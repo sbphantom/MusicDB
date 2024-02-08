@@ -13,7 +13,11 @@ public class CollectionManager {
     private final Date CURRENTDate = Date.todayDate();
     private final Date MINArtistDate = new Date(1899, 11, 31);
 
-
+    /**
+     * reads the first command from a line in the terminal
+     * @param line
+     * @return the command at the beginning of the string.
+     */
     private String commandSelect(String line) {
         //Declare what method is being used from the user. 
         String[] input = line.split(",");
@@ -46,16 +50,20 @@ public class CollectionManager {
             case "PD":
                 if(mainCollection.isEmpty()){ return "Collection is empty!"; }
                 mainCollection.printByDate();
+                break;
             case "PG":
                 if(mainCollection.isEmpty()){ return "Collection is empty!"; }
                 mainCollection.printByGenre();
+                break;
             case "PR":
                 if(mainCollection.isEmpty()){ return "Collection is empty!"; }
                 mainCollection.printByRating();
+                break;
             default:
                 return "Invalid Command";
 
         }
+        return "";
     }
 
     private String rateAlbum(Album album, int rating) {
@@ -63,16 +71,27 @@ public class CollectionManager {
         return String.format("You rate %d for %s:%s(%s)", rating, album.getTitle(), album.getReleased().toString(), album.getArtist().getArtistName());
     }
 
+    /**
+     * returns the result of the R command, which rates an album
+     * @param inputString input string from terminal
+     * @param maincollection collection storing all the albums
+     * @return string
+     */
     private String commandR(String[] inputString, Collection maincollection) {
         String title = inputString[1];
         String artistName = inputString[2];
         Date date = dateBuilder(inputString[3].split("/"));
         int rating = Integer.parseInt(inputString[4]);
+        Album album = maincollection.searchAlbum("TABD", title, artistName, date);
+
+
         if (rating < 1 || rating > 5) {
             return "Invalid rating, rating scale is 1 to 5";
         }
+        else if(album == null){
+              return String.format("%s(%s:%S) is not in the collection", title, artistName, date);
+        }
 
-        Album album = maincollection.searchAlbum("TABD", title, artistName, date);
         return rateAlbum(album, rating);
     }
 
@@ -107,7 +126,7 @@ public class CollectionManager {
         String date = inputString[3];
 
         Date dateEntered = dateBuilder(date.split("/"));
-        Album targetAlbum = mainCollection.searchAlbum("TARD", title, artist, dateEntered)
+        Album targetAlbum = mainCollection.searchAlbum("TABD", title, artist, dateEntered);
 
         // However, the album being removed might not exist in the collection.
         if (mainCollection.isEmpty() || targetAlbum == null) {
@@ -184,7 +203,7 @@ public class CollectionManager {
         if (artistBirth.toString().equals("0/0/0") ||
                 artistBirth.equals(CURRENTDate) ||
                 artistBirth.compareTo(CURRENTDate) > 0) {
-            return "Artist DOB:" + param[3] + "is invalid";
+            return "Artist DOB:" + param[3] + " is invalid";
         }
 
         //Case: The release date is not a valid calendar date.
@@ -229,7 +248,9 @@ public class CollectionManager {
         return String.format("%s(%s:%s) added to the collection.", album.getTitle(), album.getArtist(), album.getArtist().getArtistBorn());
     }
 
-
+    /**
+     * Runs the process for
+     */
     public void run() {
         System.out.println("Collection Manager is up and running\n");
         Scanner input = new Scanner(System.in);
@@ -237,7 +258,10 @@ public class CollectionManager {
         while (input.hasNext()) {
 
             String line = input.nextLine();
-            System.out.println(commandHandler(commandSelect(line), line, mainCollection));
+            if(line.trim().isEmpty()){
+                continue;
+            }
+            System.out.println( "\n" + commandHandler(commandSelect(line), line, mainCollection));
 
             if (line.equals("Q")) {
                 System.out.println("Collection Manager terminated");

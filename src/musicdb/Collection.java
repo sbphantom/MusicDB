@@ -74,11 +74,15 @@ public class Collection {
      */
     public boolean remove(Album album) {
         if (size == 0 || !contains(album)) return false;
-        else {
-            for (int i = find(album); i < size; i++) {
+        else if (find(album) == size - 1 ) {
+            albums[find(album)] = null;
+            return  true;
+        } else {
+            for (int i = find(album); i < size - 1; i++) {
                 albums[i] = albums[i + 1];
             }
             size--;
+            albums[size] = null;
             return true;
         }
     } //false if the album doesn’t exist
@@ -134,9 +138,12 @@ public class Collection {
      */
     public void printByDate() {
         sort("release");
+        System.out.println("* Collection sorted by Released Date/Title *");
+
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
+        System.out.println("* end of list *");
     }
 
     /**
@@ -144,9 +151,11 @@ public class Collection {
      */
     public void printByGenre() {
         sort("genre");
+        System.out.println("* Collection sorted by Genre/Artist *");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
+        System.out.println("* end of list *");
     } //sort by genre, then artist
 
     /**
@@ -154,15 +163,17 @@ public class Collection {
      */
     public void printByRating() {
         sort("rating");
+        System.out.println("* Collection sorted by Rating/Title * ");
         for (int i = 0; i < size; i++) {
             System.out.println(albums[i]);
         }
+        System.out.println("* end of list *");
     }//sort by average rating, then title
 
     /**
      * Checks if the collection is empty 
-     * @return True -> collection has no albumns
-     * @return False -> collection containts at least 1 album.
+     * @return True -> collection has no albums
+     * @return False -> collection contains at least 1 album.
      */
     public boolean isEmpty(){ 
         if(this.size == 0){
@@ -181,11 +192,10 @@ public class Collection {
      * @returns the target album
      */    
     public Album searchAlbum(String searchOption, String Title, String artistName, Date date ){
-
+        Album targetAlbum = new Album(null, null, null, null);
         switch (searchOption.toUpperCase()){
 
             case "TARD":
-                Album targetAlbum = new Album(null, null, null, null);
                 for(int i = 0; i < size; i++){
                     if(albums[i].getArtist().getArtistName().equalsIgnoreCase(artistName) &&
                             albums[i].getTitle().equalsIgnoreCase(Title) &&
@@ -196,11 +206,12 @@ public class Collection {
                 }
                 return targetAlbum;
             case "TABD":
-                Album targetAlbum = new Album(null, null, null, null);
+
                 Artist targetArtist = new Artist(artistName, date);
                 for(int i = 0; i < size; i++){
                     if(albums[i].getArtist().equals(targetArtist) &&
                        albums[i].getTitle().equalsIgnoreCase(Title)){
+                        targetAlbum = albums[i];
                         return targetAlbum;
                     }
                 }
