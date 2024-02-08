@@ -107,12 +107,31 @@ public class Collection {
      */
     private int compareAlbums(Album a1, Album a2, String compareBy) {
         return switch (compareBy) {
-            case "release" -> a1.getReleased().compareTo(a2.getReleased());
-            case "genre" -> a1.getGenre().compareTo(a2.getGenre());
-            case "rating" -> (int) (a1.avgRatings() - a2.avgRatings());
+            case "release" -> {
+                if (a1.getReleased().compareTo(a2.getReleased()) == 0) {
+                    yield a1.getTitle().compareTo(a2.getTitle());
+                } else {
+                    yield a1.getReleased().compareTo(a2.getReleased());
+                }
+            }
+            case "genre" -> {
+                if (a1.getGenre().compareTo(a2.getGenre()) == 0) {
+                    yield a1.getArtist().compareTo(a2.getArtist());
+                } else {
+                    yield a1.getGenre().compareTo(a2.getGenre());
+                }
+            }
+            case "rating" -> {
+                if ((int) (a2.avgRatings() - a1.avgRatings()) == 0){
+                    yield a2.getTitle().compareTo(a1.getTitle());
+                } else {
+                    yield (int) (a2.avgRatings() - a1.avgRatings());
+                }
+            }
             default -> a1.getTitle().compareTo(a2.getTitle());
         };
     }
+
 
     /**
      * Sorts the collection based on a given parameter
@@ -136,38 +155,47 @@ public class Collection {
     /**
      * Prints the collection by date
      */
-    public void printByDate() {
+    public String printByDate() {
         sort("release");
-        System.out.println("* Collection sorted by Released Date/Title *");
+        StringBuilder sb = new StringBuilder();
+        sb.append("* Collection sorted by Released Date/Title *\n");
 
         for (int i = 0; i < size; i++) {
-            System.out.println(albums[i]);
+            sb.append(albums[i]).append("\n");
         }
-        System.out.println("* end of list *");
+        sb.append("* end of list *");
+        return sb.toString();
     }
+
 
     /**
      * Prints the collection by genre
      */
-    public void printByGenre() {
+    public String printByGenre() {
         sort("genre");
-        System.out.println("* Collection sorted by Genre/Artist *");
+        StringBuilder sb = new StringBuilder();
+        sb.append("* Collection sorted by Genre/Artist *\n");
+
         for (int i = 0; i < size; i++) {
-            System.out.println(albums[i]);
+            sb.append(albums[i]).append("\n");
         }
-        System.out.println("* end of list *");
+        sb.append("* end of list *");
+        return sb.toString();
     } //sort by genre, then artist
 
     /**
      * Prints the collection by rating
      */
-    public void printByRating() {
+    public String printByRating() {
         sort("rating");
-        System.out.println("* Collection sorted by Rating/Title * ");
+        StringBuilder sb = new StringBuilder();
+        sb.append("* Collection sorted by Rating/Title *\n");
+
         for (int i = 0; i < size; i++) {
-            System.out.println(albums[i]);
+            sb.append(albums[i]).append("\n");
         }
-        System.out.println("* end of list *");
+        sb.append("* end of list *");
+        return sb.toString();
     }//sort by average rating, then title
 
     /**
