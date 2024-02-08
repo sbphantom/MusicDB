@@ -1,3 +1,10 @@
+/**
+ * This is a 'interface' based class which is used to run 
+ * our program. 
+ * @author Adeola Asimolowo (aja248)
+ */
+
+
 package musicdb;
 
 import java.util.Scanner;
