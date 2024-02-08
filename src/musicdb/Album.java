@@ -95,9 +95,7 @@ public class Album {
                 current = current.getNext();
             }
             for (int i = 0; i < ratingArray.length; i++) {
-                if (ratingArray[i] > 0) {
-                    ratingString.append("*".repeat(i + 1)).append(String.format("(%d)", ratingArray[i]));
-                }
+                ratingString.append("*".repeat(i + 1)).append(String.format("(%d)", ratingArray[i]));
             }
             ratingString.append(String.format("(average rating: %.2f)", avgRatings()));
         }
