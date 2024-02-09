@@ -1,5 +1,6 @@
 /**
  * Enum Class for various types of music genres
+ *
  * @author Danny Onuorah
  */
 
@@ -13,7 +14,7 @@ public enum Genre {
     UNKNOWN;
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name().charAt(0) + this.name().substring(1).toLowerCase();
     }
 

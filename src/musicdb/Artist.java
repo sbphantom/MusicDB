@@ -1,6 +1,6 @@
 /**
  * An Object representation of an Artist
- * Artist must be born after 1900 to be considered valid
+ * Artist must be born after 1900 to be considered valid and before current date
  *
  * @author Danny Onuorah, Adeola Asimolowo
  */
@@ -16,7 +16,13 @@ public class Artist implements Comparable<Artist> {
         this.born = born;
     }
 
+    public Date getArtistBorn() {
+        return this.born;
+    }
 
+    public String getArtistName() {
+        return this.name;
+    }
 
     @Override
     public int compareTo(Artist artist) {
@@ -38,13 +44,6 @@ public class Artist implements Comparable<Artist> {
         return String.format("%s:%s", this.name, this.born);
     }
 
-    public Date getArtistBorn(){
-        return this.born; 
-    } 
-
-    public String getArtistName(){
-        return this.name; 
-    }
     public static void main(String[] args) {
 
         Artist artist1 = new Artist("Taylor Swift", new Date(1989, 12, 13));
@@ -65,4 +64,4 @@ public class Artist implements Comparable<Artist> {
 
 
     }
-    }
+}
