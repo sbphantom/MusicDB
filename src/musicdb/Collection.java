@@ -1,17 +1,18 @@
 /**
  * An array based data structure for storing Albums
  * Array increases in increments of fours when reaching capacity
+ *
  * @author Danny Onuorah, Adeola Asimolowo
  */
-
 
 package musicdb;
 
 public class Collection {
-    private Album[] albums; //list of albums
-    private int size; //number of albums in the list
     public static final int NOT_FOUND = -1;
     public static final int PARTITION_SIZE = 4;
+
+    private Album[] albums; //list of albums
+    private int size; //number of albums in the list
 
     public Collection() {
         this.albums = new Album[PARTITION_SIZE];
@@ -19,6 +20,7 @@ public class Collection {
 
     /**
      * Searches for the album on the collection
+     *
      * @param album target album to find
      * @return its index in the array if found, else -1
      */
@@ -44,7 +46,65 @@ public class Collection {
     } //helper method to increase the capacity by 4
 
     /**
+     * Sorts the collection based on a given parameter
+     *
+     * @param sortBy sorts collection by given string
+     *               options are "release", "genre", and "rating"
+     *               defaults to album title
+     */
+    private void sort(String sortBy) {
+        for (int i = 1; i < size; ++i) {
+            Album key = albums[i];
+            int j = i - 1;
+
+            while (j >= 0 && compareAlbums(albums[j], key, sortBy) > 0) {
+                albums[j + 1] = albums[j];
+                j = j - 1;
+            }
+            albums[j + 1] = key;
+        }
+    }
+
+    /**
+     * Compares two albums based on a given param
+     *
+     * @param a1        first album to compare to
+     * @param a2        second album to compare against
+     * @param compareBy what to compare by
+     *                  options are "release", "genre", and "rating"
+     *                  defaults to album title
+     */
+    private double compareAlbums(Album a1, Album a2, String compareBy) {
+        return switch (compareBy) {
+            case "release" -> {
+                if (a1.getReleased().compareTo(a2.getReleased()) == 0) {
+                    yield a1.getTitle().compareTo(a2.getTitle());
+                } else {
+                    yield a1.getReleased().compareTo(a2.getReleased());
+                }
+            }
+            case "genre" -> {
+                if (a1.getGenre().toString().compareTo(a2.getGenre().toString()) == 0) {
+                    yield a1.getArtist().compareTo(a2.getArtist());
+                } else {
+                    yield a1.getGenre().toString().compareTo(a2.getGenre().toString());
+                }
+            }
+            case "rating" -> {
+                if ((a2.avgRatings() - a1.avgRatings()) == 0) {
+                    yield a1.getTitle().compareTo(a2.getTitle());
+                } else {
+                    yield (a2.avgRatings() - a1.avgRatings());
+                }
+
+            }
+            default -> a1.getTitle().compareTo(a2.getTitle());
+        };
+    }
+
+    /**
      * Searches for the album in the collection
+     *
      * @param album target album to find
      * @return true if the array is found, else false
      */
@@ -54,6 +114,7 @@ public class Collection {
 
     /**
      * Adds an album to the collection
+     *
      * @param album target album to find
      * @return true if successfully added, else false
      */
@@ -69,87 +130,35 @@ public class Collection {
 
     /**
      * Removes an album from the collection
+     *
      * @param album target album to remove
      * @return true if successfully removed, else false
      */
     public boolean remove(Album album) {
         if (size == 0 || !contains(album)) return false;
-        else if (find(album) == size - 1 ) {
-            albums[find(album)] = null;
-            return  true;
+
+        int index = find(album);
+        if (index == size - 1) {
+            albums[index] = null;
         } else {
-            for (int i = find(album); i < size - 1; i++) {
+            for (int i = index; i < size - 1; i++) {
                 albums[i] = albums[i + 1];
             }
-            size--;
-            albums[size] = null;
-            return true;
+            albums[size - 1] = null;
         }
-    } //false if the album doesn’t exist
+        size--;
+        return true;
+    }
 
     /**
      * Adds a new rating to an album in the collection.
-     * @param album the album rate
+     *
+     * @param album  the album rate
      * @param rating the rating given
      */
     public void rate(Album album, int rating) {
         int index = find(album);
         if (index >= 0) albums[index].rate(rating);
-    }
-
-    /**
-     * Compares two albums based on a given param
-     * @param a1 first album to compare to
-     * @param a2 second album to compare against
-     * @param compareBy what to compare by
-     *                  options are "release", "genre", and "rating"
-     *                  defaults to album title
-     */
-    private int compareAlbums(Album a1, Album a2, String compareBy) {
-        return switch (compareBy) {
-            case "release" -> {
-                if (a1.getReleased().compareTo(a2.getReleased()) == 0) {
-                    yield a1.getTitle().compareTo(a2.getTitle());
-                } else {
-                    yield a1.getReleased().compareTo(a2.getReleased());
-                }
-            }
-            case "genre" -> {
-                if (a1.getGenre().compareTo(a2.getGenre()) == 0) {
-                    yield a1.getArtist().compareTo(a2.getArtist());
-                } else {
-                    yield a1.getGenre().compareTo(a2.getGenre());
-                }
-            }
-            case "rating" -> {
-                if ((int) (a2.avgRatings() - a1.avgRatings()) == 0){
-                    yield a2.getTitle().compareTo(a1.getTitle());
-                } else {
-                    yield (int) (a2.avgRatings() - a1.avgRatings());
-                }
-            }
-            default -> a1.getTitle().compareTo(a2.getTitle());
-        };
-    }
-
-
-    /**
-     * Sorts the collection based on a given parameter
-     * @param sortBy sorts collection by given string
-     *               options are "release", "genre", and "rating"
-     *               defaults to album title
-     */
-    private void sort(String sortBy) {
-        for (int i = 1; i < size; ++i) {
-            Album key = albums[i];
-            int j = i - 1;
-
-            while (j >= 0 && compareAlbums(albums[j], key, sortBy) > 0){
-                albums[j + 1] = albums[j];
-                j = j - 1;
-            }
-            albums[j + 1] = key;
-        }
     }
 
     /**
@@ -167,7 +176,6 @@ public class Collection {
         return sb.toString();
     }
 
-
     /**
      * Prints the collection by genre
      */
@@ -181,7 +189,7 @@ public class Collection {
         }
         sb.append("* end of list *");
         return sb.toString();
-    } //sort by genre, then artist
+    }
 
     /**
      * Prints the collection by rating
@@ -196,39 +204,36 @@ public class Collection {
         }
         sb.append("* end of list *");
         return sb.toString();
-    }//sort by average rating, then title
+    }
 
     /**
-     * Checks if the collection is empty 
-     * @return True -> collection has no albums
-     * @return False -> collection contains at least 1 album.
+     * Checks if the collection is empty
+     *
+     * @return True if collection has no albums else false
      */
-    public boolean isEmpty(){ 
-        if(this.size == 0){
-            return true; 
-        }
-        return false; 
+    public boolean isEmpty() {
+        return this.size == 0;
     }
 
     /**
      * Locates album in array based on the two options
-     * TARD - Locates album given a album title, Artist name, and release date
-     * TABD - Locates album given a album title, Artist name, and Artist Born-date.
-     * @param Title The album title
+     * TARD - Locates album given an album title, Artist name, and release date
+     * TABD - Locates album given an album title, Artist name, and Artist Born-date.
+     *
+     * @param Title      The album title
      * @param artistName The name of the artist
-     * @param date Date of the album
-     * @returns the target album
-     */    
-    public Album searchAlbum(String searchOption, String Title, String artistName, Date date ){
+     * @param date       Date of the album
+     * @return target album
+     */
+    public Album searchAlbum(String searchOption, String Title, String artistName, Date date) {
         Album targetAlbum = new Album(null, null, null, null);
-        switch (searchOption.toUpperCase()){
-
+        switch (searchOption.toUpperCase()) {
             case "TARD":
-                for(int i = 0; i < size; i++){
-                    if(albums[i].getArtist().getArtistName().equalsIgnoreCase(artistName) &&
+                for (int i = 0; i < size; i++) {
+                    if (albums[i].getArtist().getArtistName().equalsIgnoreCase(artistName) &&
                             albums[i].getTitle().equalsIgnoreCase(Title) &&
                             albums[i].getReleased().equals(date)
-                    ){
+                    ) {
                         targetAlbum = albums[i];
                     }
                 }
@@ -236,18 +241,16 @@ public class Collection {
             case "TABD":
 
                 Artist targetArtist = new Artist(artistName, date);
-                for(int i = 0; i < size; i++){
-                    if(albums[i].getArtist().equals(targetArtist) &&
-                       albums[i].getTitle().equalsIgnoreCase(Title)){
+                for (int i = 0; i < size; i++) {
+                    if (albums[i].getArtist().equals(targetArtist) &&
+                            albums[i].getTitle().equalsIgnoreCase(Title)) {
                         targetAlbum = albums[i];
                         return targetAlbum;
                     }
                 }
         }
-
         return null;
     }
-
 
     public static void test() {
         Collection collection1 = new Collection();
