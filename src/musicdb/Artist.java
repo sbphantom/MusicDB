@@ -1,29 +1,50 @@
+package musicdb;
+
 /**
- * An Object representation of an Artist
- * Artist must be born after 1900 to be considered valid and before current date
+ * An Object representation of an Artist.
+ * Artist must be born after 1900 to be considered valid and before the current date.
  *
  * @author Danny Onuorah, Adeola Asimolowo
  */
-
-package musicdb;
-
 public class Artist implements Comparable<Artist> {
     private final String name;
     private final Date born;
 
+    /**
+     * Constructs an Artist with the specified name and birth date.
+     *
+     * @param name The name of the artist.
+     * @param born The birth date of the artist.
+     */
     public Artist(String name, Date born) {
         this.name = name;
         this.born = born;
     }
 
+    /**
+     * Gets the birth date of the artist.
+     *
+     * @return The birth date of the artist.
+     */
     public Date getArtistBorn() {
         return this.born;
     }
 
+    /**
+     * Gets the name of the artist.
+     *
+     * @return The name of the artist.
+     */
     public String getArtistName() {
         return this.name;
     }
 
+    /**
+     * Compares this artist with the specified artist for order.
+     *
+     * @param artist The artist to be compared.
+     * @return A negative integer, zero, or a positive integer as this artist is less than, equal to, or greater than the specified artist.
+     */
     @Override
     public int compareTo(Artist artist) {
         if (this.name.compareTo(artist.name) != 0) {
@@ -31,6 +52,12 @@ public class Artist implements Comparable<Artist> {
         } else return this.born.compareTo(artist.born);
     }
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param obj The reference object with which to compare.
+     * @return true if this object is the same as the obj argument; false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Artist artist) {
@@ -39,6 +66,11 @@ public class Artist implements Comparable<Artist> {
         return false;
     }
 
+    /**
+     * Returns a string representation of the artist.
+     *
+     * @return A string representation of the artist.
+     */
     @Override
     public String toString() {
         return String.format("%s:%s", this.name, this.born);
@@ -61,7 +93,5 @@ public class Artist implements Comparable<Artist> {
         System.out.println(artist5.compareTo(artist6) > 0); // a5 name after a6, return positive
         System.out.println(artist7.compareTo(artist5) < 0); // a7 name before a5, return negative
         System.out.println(artist6.compareTo(artist6) == 0); // a6 same as a6, return zero
-
-
     }
 }
