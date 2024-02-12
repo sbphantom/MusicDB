@@ -1,5 +1,6 @@
 /**
  * Enum Class for various types of music genres
+ *
  * @author Danny Onuorah
  */
 
@@ -10,6 +11,12 @@ public enum Genre {
     COUNTRY,
     CLASSICAL,
     JAZZ,
-    UNKNOWN
+    UNKNOWN;
+
+    @Override
+    public String toString() {
+        return this.name().charAt(0) + this.name().substring(1).toLowerCase();
+    }
+
 }
 

@@ -8,10 +8,10 @@
 package musicdb;
 
 public class Album {
-    private String title;
-    private Artist artist;
-    private Genre genre;
-    private Date released;
+    private final String title;
+    private final Artist artist;
+    private final Genre genre;
+    private final Date released;
 
     private Rating ratings; //a linked list of ratings
 
@@ -24,7 +24,9 @@ public class Album {
         this.released = released;
     }
 
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 
     public Artist getArtist() {
         return artist;
@@ -67,6 +69,10 @@ public class Album {
      */
     public double avgRatings() {
         Rating current = ratings;
+        if (current == null) {
+            return 0;
+        }
+
         double sum = 0;
         int length = 0;
         while (current != null) {
@@ -95,9 +101,7 @@ public class Album {
                 current = current.getNext();
             }
             for (int i = 0; i < ratingArray.length; i++) {
-                if (ratingArray[i] > 0) {
-                    ratingString.append("*".repeat(i + 1)).append(String.format("(%d)", ratingArray[i]));
-                }
+                ratingString.append("*".repeat(i + 1)).append(String.format("(%d)", ratingArray[i]));
             }
             ratingString.append(String.format("(average rating: %.2f)", avgRatings()));
         }
